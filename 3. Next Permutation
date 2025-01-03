@@ -1,0 +1,46 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int idx = nums.length-1;
+        boolean flag = false;
+
+        while(idx>0){
+            if(nums[idx-1]<nums[idx]){
+                idx--;
+                flag = true;
+                break;
+            }
+            idx--;
+        }
+
+        if(!flag){
+            reverse(nums,0,nums.length-1);
+            return;
+        }
+
+        for(int i=nums.length-1;i>idx;i--){
+            if(nums[i]>nums[idx]){
+                swap(nums,idx,i);
+                break;
+            }
+        }
+
+        System.out.println(idx);
+        reverse(nums,idx+1,nums.length-1);
+    }
+
+    public void swap(int[] nums,int i,int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public void reverse(int[] nums,int i,int j){
+        while(i<j){
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            i++;
+            j--;
+        }
+    }
+}
