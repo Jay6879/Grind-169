@@ -1,0 +1,49 @@
+class Solution {
+    // Function to flatten a linked list
+    Node flatten(Node root) {
+        // code here
+        if(root==null || root.next==null){
+            return root;
+        }
+        
+        root.next = flatten(root.next);
+        
+        root = mergeLinkedLists(root,root.next);
+        
+        return root;
+    }
+    
+    Node mergeLinkedLists(Node l1,Node l2){
+        
+        Node dummy = new Node(-1);
+        
+        Node res = dummy;
+        
+        while(l1!=null && l2!=null){
+            if(l1.data<=l2.data){
+                res.bottom = new Node(l1.data);
+                res = res.bottom;
+                l1 = l1.bottom;
+            }
+            else{
+                res.bottom = new Node(l2.data);
+                res = res.bottom;
+                l2 = l2.bottom;
+            }
+        }
+            
+        while(l1!=null){
+            res.bottom = new Node(l1.data);
+            res = res.bottom;
+            l1 = l1.bottom;
+        }
+            
+        while(l2!=null){
+            res.bottom = new Node(l2.data);
+            res = res.bottom;
+            l2 = l2.bottom;
+        }
+        
+        return dummy.bottom;
+    }
+}
