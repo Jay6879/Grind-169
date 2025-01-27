@@ -1,0 +1,29 @@
+class Solution {
+    public Node copyRandomList(Node head) {
+        HashMap<Node,Node> hmap = new HashMap<>();
+
+        Node dummy = head;
+
+        while(dummy!=null){
+            hmap.put(dummy,new Node(dummy.val,null,null));
+            dummy = dummy.next;
+        }
+
+        Node res = new Node(-1);
+        dummy = res;
+
+        res.next = hmap.get(head);
+        res = res.next;
+        
+        while(head!=null){
+            res.next = hmap.get(head.next);
+            res.random = hmap.get(head.random);
+            res = res.next;
+            head = head.next;
+        }
+
+        return dummy.next;
+
+
+    }
+}
