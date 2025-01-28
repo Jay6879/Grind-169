@@ -1,0 +1,33 @@
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        Arrays.sort(candidates);
+
+        backtrack(0,new ArrayList<>(),candidates,ans,target,0);
+
+        return ans;
+    }
+
+    public void backtrack(int idx,List<Integer> al,int[] candidates,List<List<Integer>> ans,int target,int currSum){
+        if (currSum > target) {
+            return;
+        }
+
+        // If the current sum matches the target, add the combination to the result
+        if (currSum == target) {
+            ans.add(new ArrayList<>(al));
+            return;
+        }
+
+        for(int i=idx;i<candidates.length;i++){
+            if(i>idx && candidates[i-1]==candidates[i]){
+                continue;
+            }
+
+            al.add(candidates[i]);
+            backtrack(i+1,al,candidates,ans,target,currSum+candidates[i]);
+            al.remove(al.size()-1);
+        }
+    }
+}
