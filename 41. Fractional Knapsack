@@ -1,0 +1,40 @@
+class State{
+    int value;
+    int weight;
+    double fraction;
+    State(int value,int weight,double fraction){
+        this.value = value;
+        this.weight = weight;
+        this.fraction = fraction;
+    }
+}
+class Solution {
+    // Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(List<Integer> val, List<Integer> wt, int capacity) {
+        
+        PriorityQueue<State> pq = new PriorityQueue<>((a, b) -> Double.compare(b.fraction, a.fraction));
+
+        // code here
+        for(int i=0;i<val.size();i++){
+            pq.add(new State(val.get(i),wt.get(i),((double)val.get(i)/wt.get(i))));
+        }
+        
+        double totalValue = 0;
+        
+        while(!pq.isEmpty() && capacity>0){
+            State st = pq.remove();
+            if(st.weight<=capacity){
+                capacity-= st.weight;
+                totalValue+=st.value;
+            }
+            else{
+                totalValue+=(st.fraction*capacity);
+                capacity = 0;
+            }
+        }
+        
+        return totalValue;
+        
+        
+    }
+}
