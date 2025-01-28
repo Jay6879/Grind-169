@@ -1,0 +1,42 @@
+class State{
+    int arrivalTime;
+    int departedTime;
+    State(int arrivalTime,int departedTime){
+        this.arrivalTime = arrivalTime;
+        this.departedTime = departedTime;
+    }
+}
+
+class Solution {
+    // Function to find the minimum number of platforms required at the
+    // railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[]) {
+        // add your code here
+        int[][] trainTimings = new int[arr.length][2];
+        
+        for(int i=0;i<arr.length;i++){
+            trainTimings[i][0] = arr[i];
+            trainTimings[i][1] = dep[i];
+        }
+        
+        Arrays.sort(trainTimings,(a,b)->a[0]-b[0]);
+        
+        PriorityQueue<State> pq = new PriorityQueue<>((a,b)->a.departedTime-b.departedTime);
+        
+        int platforms = 1;
+        
+        pq.add(new State(trainTimings[0][0],trainTimings[0][1]));
+        
+        for(int i=1;i<trainTimings.length;i++){
+            if(trainTimings[i][0]>pq.peek().departedTime){
+                pq.remove();
+            }
+            else{
+                platforms++;
+            }
+            pq.add(new State(trainTimings[i][0],trainTimings[i][1]));
+        }
+        
+        return platforms;
+    }
+}
