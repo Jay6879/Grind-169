@@ -1,0 +1,53 @@
+
+class Solution {
+    // Possible moves: Down, Right, Up, Left
+    int[][] directions = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    char[] moves = {'D', 'R', 'U', 'L'}; // Corresponding move characters
+    
+    public ArrayList<String> findPath(ArrayList<ArrayList<Integer>> mat) {
+        ArrayList<String> ans = new ArrayList<>();
+        int n = mat.size();
+        
+        // If start or end cell is blocked, no path exists
+        if (mat.get(0).get(0) == 0 || mat.get(n-1).get(n-1) == 0) {
+            return ans;
+        }
+        
+        boolean[][] seen = new boolean[n][n];
+        
+        // Start backtracking from (0,0)
+        seen[0][0] = true;
+        backtrack(0, 0, ans, "", seen, mat);
+        
+        Collections.sort(ans);
+        
+        return ans;
+    }
+    
+    public void backtrack(int row, int col, ArrayList<String> ans, String currPath, boolean[][] seen, ArrayList<ArrayList<Integer>> mat) {
+        int n = mat.size();
+        
+        // If we reached the bottom-right corner, add path to result
+        if (row == n-1 && col == n-1) {
+            ans.add(currPath);
+            return;
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            int nr = row + directions[i][0];
+            int nc = col + directions[i][1];
+
+            // Check if the next move is valid
+            if (isValid(nr, nc, mat, seen)) {
+                seen[nr][nc] = true;
+                backtrack(nr, nc, ans, currPath + moves[i], seen, mat);
+                seen[nr][nc] = false; // Backtrack
+            }
+        }
+    }
+    
+    public boolean isValid(int row, int col, ArrayList<ArrayList<Integer>> mat, boolean[][] seen) {
+        int n = mat.size();
+        return row >= 0 && row < n && col >= 0 && col < n && mat.get(row).get(col) == 1 && !seen[row][col];
+    }
+}
