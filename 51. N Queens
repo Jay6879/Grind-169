@@ -1,0 +1,57 @@
+class Solution {
+    int size;
+    public List<List<String>> solveNQueens(int n) {
+        this.size =n;
+        List<List<String>> ans = new ArrayList<>();
+
+
+        char[][] emptyBoard = new char[n][n];
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                emptyBoard[i][j]='.';
+            }
+        }
+
+        backtrack(0,ans,emptyBoard,new HashSet<>(),new HashSet<>(),new HashSet<>());
+
+        return ans;
+    }
+
+    public void formBoard(char[][] board,List<List<String>>ans){
+        List<String> curr = new ArrayList<>();
+
+        for(int i=0;i<size;i++){
+            curr.add(new String(board[i]));
+        }
+
+        ans.add(curr);
+    }
+
+    public void backtrack(int row,List<List<String>> ans,char[][] board,HashSet<Integer> cols, HashSet<Integer> diagnols, HashSet<Integer> antiDiagnols){
+        if(row==size){
+            formBoard(board,ans);
+            return;
+        }
+
+        for(int i=0;i<size;i++){
+            if(cols.contains(i) || diagnols.contains(row-i) || antiDiagnols.contains(row+i)){
+                continue;
+            }
+
+            cols.add(i);
+            diagnols.add(row-i);
+            antiDiagnols.add(row+i);
+
+            board[row][i] = 'Q';
+
+            backtrack(row+1,ans,board,cols,diagnols,antiDiagnols);
+
+            board[row][i] = '.';
+
+            cols.remove(i);
+            diagnols.remove(row-i);
+            antiDiagnols.remove(row+i);
+        }
+    }
+}
