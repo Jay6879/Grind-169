@@ -1,0 +1,64 @@
+
+
+class Solution {
+    HashMap<Integer,List<Integer>> hmap;
+    boolean graphColoring(int v, List<int[]> edges, int m) {
+        // code here
+        
+        hmap = new HashMap<>();
+        
+        for(int i=0;i<v;i++){
+            hmap.put(i,new ArrayList<>());
+        }
+        
+        for(int[] edge:edges){
+            hmap.get(edge[0]).add(edge[1]);
+            hmap.get(edge[1]).add(edge[0]);
+        }
+        
+        
+        int[] color = new int[v];
+        
+        Arrays.fill(color,-1);
+        
+        
+        if(backtrack(color,0,m)){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    boolean backtrack(int[] color,int node,int maxColors){
+        
+        if(node==color.length){
+            return true;
+        }
+        
+        for(int i=1;i<=maxColors;i++){
+            if(isPossible(color,node,i)){
+                color[node] = i;
+                
+                if(backtrack(color,node+1,maxColors)){
+                    return true;
+                }
+                else{
+                    color[node] = -1;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    boolean isPossible(int[] color,int node,int presentColor){
+        
+        for(int nei:hmap.get(node)){
+            if(color[nei]==presentColor){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
