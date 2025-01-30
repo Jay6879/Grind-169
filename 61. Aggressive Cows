@@ -1,0 +1,40 @@
+class Solution {
+    public static int aggressiveCows(int[] stalls, int k) {
+        // code here
+        int low = 1;
+        int high = -1;
+        
+        Arrays.sort(stalls);
+        
+        for(int stall:stalls){
+            high = Math.max(stall,high);
+        }
+        
+        while(low<=high){
+            int mid = low+(high-low)/2;
+            
+            if(isPossible(mid,k,stalls)){
+                low = mid+1;
+            }
+            else{
+                high = mid-1;
+            }
+        }
+        
+        return high;
+    }
+    
+    public static boolean isPossible(int distance,int k,int[] stalls){
+        int count = 1;
+        int lastPlaced = stalls[0];
+        
+        for(int i=1;i<stalls.length;i++){
+            if(stalls[i]-lastPlaced>=distance){
+                count++;
+                lastPlaced = stalls[i];
+            }
+        }
+        
+        return count>=k;
+    }
+}
