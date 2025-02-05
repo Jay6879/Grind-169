@@ -1,0 +1,42 @@
+class Solution {
+    public int myAtoi(String s) {
+        int ans = 0;
+        s = s.trim();
+
+        if(s.length()==0 || s.isEmpty()){
+            return 0;
+        }
+
+
+        boolean isNegative = false;
+        int idx = 0;
+        
+        if (s.charAt(idx) == '+' || s.charAt(idx) == '-') {
+            isNegative = s.charAt(idx) == '-';
+            idx++;
+        }
+
+
+        for(;idx<s.length();idx++){
+            if(!Character.isDigit(s.charAt(idx))){
+                break;
+            }
+            if(ans>(Integer.MAX_VALUE-(s.charAt(idx)-'0'))/10){
+                if(isNegative){
+                    return Integer.MIN_VALUE;
+                }
+                else{
+                    return Integer.MAX_VALUE;
+                }
+            }
+            ans=ans*10+s.charAt(idx)-'0';
+        }
+
+        if(isNegative){
+            ans = ans*-1;
+        }
+
+        return ans;
+
+    }
+}
