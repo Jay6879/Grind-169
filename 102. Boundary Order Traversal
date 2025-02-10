@@ -1,0 +1,90 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    List<Integer> ans;
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        ans = new ArrayList<>();
+
+        if(root==null){
+            return ans;
+        }
+
+        ans.add(root.val);
+        if(root.right==null && root.left==null){
+            return ans;
+        }
+
+        leftView(root.left);
+        leafNodes(root);
+        rightView(root.right);
+
+        return ans;
+    }
+
+    public void leftView(TreeNode root){
+        if(root==null){
+            return;
+        }
+
+        if(root.left==null && root.right==null){
+            return;
+        }
+
+        ans.add(root.val);
+
+        if(root.left!=null){
+            leftView(root.left);
+        }
+        else{
+            leftView(root.right);
+        }
+    }
+
+    public void leafNodes(TreeNode root){
+        if(root==null){
+            return;
+        }
+
+        if(root.left==null && root.right==null){
+            ans.add(root.val);
+            return;
+        }
+
+        leafNodes(root.left);
+        leafNodes(root.right);
+    }
+
+    public void rightView(TreeNode root){
+        if(root==null){
+            return;
+        }
+
+        if(root.left==null && root.right==null){
+            return;
+        }
+
+        if(root.right!=null){
+            rightView(root.right);
+        }
+        else{
+            rightView(root.left);
+        }
+
+        ans.add(root.val);
+    }
+
+
+}
