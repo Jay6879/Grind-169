@@ -1,0 +1,30 @@
+class Solution {
+    static ArrayList<ArrayList<Integer>> ans;
+    public static ArrayList<ArrayList<Integer>> Paths(Node root) {
+        // code here
+        ans = new ArrayList<>();
+        
+        dfs(root,new ArrayList<>());
+        
+        return ans;
+    }
+    
+    public static void dfs(Node node,ArrayList<Integer> al){
+        if(node==null){
+            return;
+        }
+        
+        al.add(node.data);
+        
+        if(node.left==null && node.right==null){
+            ans.add(new ArrayList<>(al));
+            al.remove(al.size()-1);
+            return;
+        }
+        
+        dfs(node.left,al);
+        dfs(node.right,al);
+        
+        al.remove(al.size()-1);
+    }
+}
