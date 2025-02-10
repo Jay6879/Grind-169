@@ -1,0 +1,80 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class State{
+    int row;
+    int col;
+    TreeNode node;
+    State(int row,int col,TreeNode node){
+        this.row = row;
+        this.col = col;
+        this.node = node;
+    } 
+}
+
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        TreeMap<Integer,TreeMap<Integer,ArrayList<Integer>>> hmap = new TreeMap<>();
+
+        Queue<State> q = new LinkedList<>();
+        
+        q.add(new State(0,0,root));
+
+        while(!q.isEmpty()){
+            State st = q.poll();
+            int row  = st.row;
+            int col= st.col;
+            TreeNode node = st.node;
+
+            if(!hmap.containsKey(col)){
+                hmap.put(col,new TreeMap<>());
+            }
+
+            if(!hmap.get(col).containsKey(row)){
+                hmap.get(col).put(row,new ArrayList<>());
+            }
+
+            hmap.get(col).get(row).add(node.val);
+
+            if(node.left!=null){
+                q.add(new State(row+1,col-1,node.left));
+            }
+
+            if(node.right!=null){
+                q.add(new State(row+1,col+1,node.right));
+            }
+        }
+
+        for(int val:hmap.keySet()){
+            List<Integer> al = new ArrayList<>();
+
+            for(int row:hmap.get(val).keySet()){
+                List<Integer> a1 = hmap.get(val).get(row);
+                Collections.sort(a1);
+                for(int i=0;i<a1.size();i++){
+                    al.add(a1.get(i));
+                }
+            }
+
+            ans.add(al);
+        }
+
+        return ans;
+
+
+    }
+}
