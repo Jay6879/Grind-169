@@ -1,0 +1,32 @@
+class Solution
+{
+    //Function to check whether all nodes of a tree have the value 
+    //equal to the sum of their child nodes.
+    public static int isSumProperty(Node root)
+    {
+        // add your code here
+        return isFollows(root)?1:0;
+    }
+    
+    public static boolean isFollows(Node root){
+        if(root==null){
+            return true;
+        }
+        
+        if(root.left==null && root.right==null){
+            return true;
+        }
+        
+        boolean left = isFollows(root.left);
+        boolean right = isFollows(root.right);
+        
+        int leftVal = root.left==null?0:root.left.data;
+        int rightVal = root.right==null?0:root.right.data;
+        
+        if(root.data!=leftVal+rightVal){
+            return false;
+        }
+        
+        return left&&right;
+    }
+}
