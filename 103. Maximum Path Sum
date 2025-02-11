@@ -1,0 +1,24 @@
+class Solution {
+    int max = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return max;
+    }
+
+    public int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        // Ignore negative values by using Math.max(0, dfs(...))
+        int left = Math.max(0, dfs(root.left));
+        int right = Math.max(0, dfs(root.right));
+
+        // Update max with the sum including both children
+        max = Math.max(max, left + right + root.val);
+
+        // Return the max path sum including the current node
+        return Math.max(left, right) + root.val;
+    }
+}
