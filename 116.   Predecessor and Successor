@@ -1,0 +1,38 @@
+class Solution {
+    public static void findPreSuc(Node root, Node[] pre, Node[] suc, int key) {
+        // code here.
+        // update pre[0] with the predecessor of the key
+        // update suc[0] with the successor of the key
+        
+        findPre(root,pre,key);
+        findSuc(root,suc,key);
+    }
+    
+    public static void findPre(Node root,Node[] pre,int key){
+        if(root==null){
+            return;
+        }
+        
+        if(root.data<key){
+            pre[0] = root;
+            findPre(root.right,pre,key);
+            return;
+        }
+        
+        findPre(root.left,pre,key);
+    }
+    
+    public static void findSuc(Node root,Node[] suc,int key){
+        if(root==null){
+            return;
+        }
+        
+        if(root.data>key){
+            suc[0] = root;
+            findSuc(root.left,suc,key);
+            return;
+        }
+        
+        findSuc(root.right,suc,key);
+    }
+}
