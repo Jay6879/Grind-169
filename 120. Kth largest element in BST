@@ -1,0 +1,43 @@
+class Solution {
+    // return the Kth largest element in the given BST rooted at 'root'
+    int n = 0;
+    int count = 0;
+    int result = 0;
+    public int kthLargest(Node root, int k) {
+        // Your code here
+        calculateLength(root);
+        
+        k = n-k+1;
+        
+        dfs(root,k);
+        
+        return result;
+        
+    }
+    
+    public void calculateLength(Node root){
+        if(root==null)
+        {
+            return;
+        }
+        n++;
+        calculateLength(root.left);
+        calculateLength(root.right);
+    }
+    
+    
+    
+    public void dfs(Node root,int k){
+        if(root==null){
+            return;
+        }
+
+        dfs(root.left,k);
+        count++;
+        if(count==k){
+            result = root.data;
+            return;
+        }
+        dfs(root.right,k);
+    }
+}
