@@ -1,0 +1,58 @@
+import java.util.*;
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root == null) return "N,"; // Return valid empty tree format
+
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            TreeNode node = q.remove();
+
+            if (node != null) {
+                sb.append(node.val).append(",");
+                q.add(node.left);
+                q.add(node.right);
+            } else {
+                sb.append("N,");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data.equals("N,")) return null; // Handle empty tree case
+        
+        String[] arr = data.split(",");
+        int i = 0;
+
+        TreeNode root = new TreeNode(Integer.parseInt(arr[i]));
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        i++;
+
+        while (!q.isEmpty() && i < arr.length) {
+            TreeNode node = q.remove();
+
+            if (!arr[i].equals("N")) {
+                node.left = new TreeNode(Integer.parseInt(arr[i]));
+                q.add(node.left);
+            }
+            i++;  // Move to the next value
+
+            if (i < arr.length && !arr[i].equals("N")) {
+                node.right = new TreeNode(Integer.parseInt(arr[i]));
+                q.add(node.right);
+            }
+            i++;  // Move to the next value
+        }
+
+        return root;
+    }
+}
