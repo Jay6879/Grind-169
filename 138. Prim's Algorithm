@@ -1,0 +1,58 @@
+
+
+// User function Template for Java
+
+class State{
+    int node;
+    int parent;
+    int weight;
+    State(int node,int parent,int weight){
+        this.node = node;
+        this.parent = parent;
+        this.weight = weight;
+    }
+}
+
+
+class Solution {
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+    
+        // Code Here.
+        PriorityQueue<State> pq = new PriorityQueue<>((n1,n2)->{
+            if(n1.weight==n2.weight){
+                return n1.node-n2.node;
+            }
+            
+            return n1.weight-n2.weight;
+        });
+        
+        boolean[] visited = new boolean[V];
+        
+        int distance = 0;
+
+        
+        Arrays.fill(visited,false);
+        
+        pq.add(new State(0,-1,0));
+        
+        while(!pq.isEmpty()){
+            State st = pq.poll();
+            int node = st.node;
+            int parent = st.parent;
+            int weight = st.weight;
+            
+            if(visited[node]){
+                continue;
+            }
+            
+            visited[node] = true;
+            distance += weight; 
+            
+            for(int[] edge:adj.get(node)){
+                pq.add(new State(edge[0],node,edge[1]));
+            }
+        }
+        
+        return distance;
+    }
+}
