@@ -1,0 +1,80 @@
+
+/*
+class iPair {
+    int first, second;
+
+    iPair(int first, int second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+*/
+
+// User function Template for Java
+class State{
+    int node;
+    int distance;
+    State(int node,int distance){
+        this.node = node;
+        this.distance = distance;
+    }
+}
+
+class Solution {
+    // Function to find the shortest distance of all the vertices
+    // from the source vertex src.
+    ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adj, int src) {
+        // Write your code here
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        HashMap<Integer,List<iPair>> hmap = new HashMap<>();
+        
+        for(int i=0;i<adj.size();i++){
+            hmap.put(i,new ArrayList<>());
+        }
+        
+        PriorityQueue<State> pq = new PriorityQueue<>((n1,n2)->n1.distance-n2.distance);
+        
+        for(int i=0;i<adj.size();i++){
+            for(int j=0;j<adj.get(i).size();j++){
+                hmap.get(i).add(adj.get(i).get(j));
+            }
+        }
+        
+        int[] minDistance = new int[adj.size()];
+        
+        Arrays.fill(minDistance,Integer.MAX_VALUE);
+        
+        pq.add(new State(src,0));
+        
+        while(!pq.isEmpty()){
+            State st = pq.poll();
+            
+            int node = st.node;
+            int distance = st.distance;
+            
+            if(minDistance[node]<distance){
+                continue;
+            }
+            
+            minDistance[node] = distance;
+            
+            for(iPair p:hmap.get(node)){
+                int newNode = p.first;
+                int newDistance = p.second;
+                
+                if(distance+newDistance<minDistance[newNode]){
+                    pq.add(new State(newNode,distance+newDistance));
+                }
+            }
+        }
+        
+        ArrayList<Integer> al = new ArrayList<>();
+        
+        for(int i=0;i<minDistance.length;i++){
+            al.add(minDistance[i]);
+        }
+        
+        return al;
+    }
+}
