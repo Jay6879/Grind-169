@@ -1,0 +1,31 @@
+class Solution {
+    public void shortestDistance(int[][] mat) {
+        // Code here
+        for(int i=0;i<mat.length;i++){
+            for(int j=0;j<mat[i].length;j++){
+                if(mat[i][j]==-1){
+                    mat[i][j] = (int)(1e9);
+                }
+                if(i==j){
+                    mat[i][j] = 0;
+                }
+            }
+        }
+        
+        for(int i=0;i<mat.length;i++){
+            for(int j=0;j<mat[0].length;j++){
+                for(int k=0;k<mat.length;k++){
+                    mat[j][k] = Math.min(mat[j][k],mat[j][i]+mat[i][k]);
+                }
+            }
+        }
+        
+        for(int i=0;i<mat.length;i++){
+            for(int j=0;j<mat.length;j++){
+                if(mat[i][j]==(int)(1e9)){
+                    mat[i][j] = -1;
+                }
+            }
+        }
+    }
+}
