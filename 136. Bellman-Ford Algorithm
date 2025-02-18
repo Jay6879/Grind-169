@@ -1,0 +1,45 @@
+class Solution {
+    static int[] bellmanFord(int V, int[][] edges, int src) {
+        // Write your code here
+        int[] distance = new int[V];
+        
+        Arrays.fill(distance,(int)Math.pow(10,8));
+        
+        distance[src] = 0;
+        
+        for(int i=0;i<V;i++){
+            
+            for(int[] edge:edges){
+                int x = edge[0];
+                int y = edge[1];
+                int z = edge[2];
+                
+                if(distance[x]==Math.pow(10,8)){
+                    continue;
+                }
+                
+                if(distance[x]+z<distance[y]){
+                    distance[y] = distance[x]+z;
+                }
+            }
+        }
+        
+        for(int[] edge:edges){
+            int x = edge[0];
+            int y = edge[1];
+            int z = edge[2];
+                
+            if(distance[x]==Math.pow(10,8)){
+                continue;
+            }
+                
+            if(distance[x]+z<distance[y]){
+                int[] temp = new int[1];
+                temp[0] = -1;
+                return temp;
+            }
+        }
+        
+        return distance;
+    }
+}
