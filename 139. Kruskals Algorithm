@@ -1,0 +1,71 @@
+class Solution {
+    
+    
+    static int findParent(int[] parent,int x){
+        if(parent[x]==x){
+            return x;
+        }
+        
+        parent[x] = findParent(parent,parent[x]);
+        
+        return parent[x];
+    }
+    
+    static boolean unionFind(int[] parent, int[] rank,int x,int y){
+        int xParent = findParent(parent,x);
+        int yParent = findParent(parent,y);
+        
+        if(xParent==yParent){
+            return false;
+        }
+        
+        if(rank[xParent]>rank[yParent]){
+            parent[yParent] = xParent;
+        }
+        else if(rank[xParent]<rank[yParent]){
+            parent[xParent] = yParent;
+        }
+        else{
+            parent[yParent] = xParent;
+            rank[xParent]++;
+        }
+        
+        return true;
+    }
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+        // Code Here.
+        
+        int[] parent = new int[V];
+        int[] rank = new int[V];
+        
+        for(int i=0;i<V;i++){
+            parent[i] = i;
+            rank[i] = 0;
+        }
+        
+       List<int[]> edges = new ArrayList<>();
+        
+        // Convert adjacency list to edge list
+        for (int u = 0; u < V; u++) {
+            for (int[] edge : adj.get(u)) {
+                int v = edge[0];
+                int weight = edge[1];
+                edges.add(new int[]{u, v, weight});
+            }
+        }
+
+        // Sort edges based on weight
+        edges.sort(Comparator.comparingInt(a -> a[2]));
+        
+        int weight = 0;
+        
+        for(int i=0;i<edges.size();i++){
+            if(unionFind(parent,rank,edges.get(i)[0],edges.get(i)[1])){
+                weight+=edges.get(i)[2];
+            }
+        }
+        
+        return weight;
+       
+    }
+}
